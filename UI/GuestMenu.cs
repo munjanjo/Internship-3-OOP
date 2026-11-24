@@ -1,3 +1,4 @@
+using Dump.Models;
 using Dump.Services;
 namespace Dump.UI;
 
@@ -15,7 +16,13 @@ public class GuestMenu
             switch (Console.ReadLine())
             {
                 case "1": new GuestServices().Register(); break;
-                case "2": new GuestServices().Login(); break;
+                case "2":
+                    Guest? guest = new GuestServices().Login();
+                    if (guest != null)
+                    {
+                        new GuestAccountMenu(guest).Show();
+                    }
+                    break;
                 case "3": return;
                 default:
                     Console.WriteLine("Neispravan unos.");
