@@ -10,7 +10,6 @@ public class Guest
     private string password;
     public DateTime CreatedAt { get; }
     public DateTime LastUpdated { get; private set; }
-
     public Guest(string firstName, string lastName, int birthYear, string email, string password)
     {
         if (password.Length < 6)

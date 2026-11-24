@@ -46,7 +46,7 @@ public class GuestServices
         {
             System.Console.WriteLine("Unesi email:");
             Email = Console.ReadLine().Trim().ToLower();
-            if (!string.IsNullOrWhiteSpace(Email) || !Email.Contains('@'))
+            if (string.IsNullOrWhiteSpace(Email) || !Email.Contains('@'))
                 System.Console.WriteLine("Moras valjani unijeti email!");
             else if (HotelData.Guests.Any(g => g.Email == Email))
                 System.Console.WriteLine("Gost s tim emailom vec postoji!");
@@ -78,6 +78,26 @@ public class GuestServices
         HotelData.Guests.Add(guest);
         System.Console.WriteLine($"{guest.FullName} je uspjesno registriran.");
         Console.ReadKey();
+    }
+    public Guest Login()
+    {
+        while (true)
+        {
+            System.Console.WriteLine("Unesi email:");
+            string Email = Console.ReadLine().Trim().ToLower();
+            System.Console.WriteLine("Unesi lozinku:");
+            string Password = Console.ReadLine().Trim();
+
+            Guest? guest = HotelData.Guests.FirstOrDefault(g => g.Email == Email);
+            if (guest != null && guest.CheckPassword(Password))
+            {
+                System.Console.WriteLine($"Uspjesna prijava: {guest.FullName}");
+                Console.ReadKey();
+                return guest;
+            }
+
+            System.Console.WriteLine("Pogresan email ili lozinka! Pokusaj ponovno.");
+        }
     }
 
 
