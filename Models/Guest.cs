@@ -3,11 +3,11 @@ namespace Dump.Models;
 public class Guest
 {
     public Guid Id { get; }
-    public required string FirstName { get; }
-    public required string LastName { get; }
-    public required int BirthYear { get; }
-    public required string Email { get; }
-    private required string password;
+    public string FirstName { get; }
+    public string LastName { get; }
+    public int BirthYear { get; }
+    public string Email { get; }
+    private string password;
     public DateTime CreatedAt { get; }
     public DateTime LastUpdated { get; private set; }
 

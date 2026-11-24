@@ -1,3 +1,5 @@
+using Dump.Models;
+using Dump.Services;
 namespace Dump.UI;
 
 public class MainMenu
@@ -15,7 +17,7 @@ public class MainMenu
             Console.Write("Unos:");
             switch (Console.ReadLine())
             {
-                case "1": break;
+                case "1": new GuestMenu().Show(); break;
                 case "2": break;
                 case "3": break;
                 case "4": break;
