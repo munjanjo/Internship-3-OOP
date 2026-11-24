@@ -1,1 +1,3 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using Dump.UI;
+
+new MainMenu().Show();
