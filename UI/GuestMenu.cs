@@ -4,6 +4,7 @@ namespace Dump.UI;
 
 public class GuestMenu
 {
+    GuestServices services = new GuestServices();
     public void Show()
     {
         while (true)
@@ -15,9 +16,9 @@ public class GuestMenu
             Console.Write("Unos:");
             switch (Console.ReadLine())
             {
-                case "1": new GuestServices().Register(); break;
+                case "1": services.Register(); break;
                 case "2":
-                    Guest? guest = new GuestServices().Login();
+                    Guest? guest = services.Login();
                     if (guest != null)
                     {
                         new GuestAccountMenu(guest).Show();

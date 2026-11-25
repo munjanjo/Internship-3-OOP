@@ -99,6 +99,26 @@ public class GuestServices
             System.Console.WriteLine("Pogresan email ili lozinka! Pokusaj ponovno.");
         }
     }
+    public void PrintMyReservations(Guest guest)
+    {
+        var reservations = HotelData.Reservations.Where(r => r.Guest == guest).ToList();
+        if (reservations.Count != 0)
+        {
+
+            System.Console.WriteLine($"Rezervacije od {guest.FullName}:");
+            foreach (var r in reservations)
+            {
+                Console.WriteLine($"[{r.Id}] Soba {r.Room.Number} ({r.Room.Category}) | {r.CheckIn:yyyy-MM-dd} -> {r.CheckOut:yyyy-MM-dd} | {r.Nights} noći | {r.TotalPrice:0.00} € | {r.Status}");
+            }
+            Console.ReadKey();
+        }
+        else
+        {
+            Console.WriteLine("Nema postojecih rezervacija!");
+            Console.ReadKey();
+        }
+
+    }
 
 
 }

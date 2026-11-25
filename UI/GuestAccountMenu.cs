@@ -1,10 +1,11 @@
 using Dump.Models;
+using Dump.Services;
 namespace Dump.UI;
 
 public class GuestAccountMenu
 {
     private Guest guest;
-
+    GuestServices services = new GuestServices();
     public GuestAccountMenu(Guest guest)
     {
         this.guest = guest;
@@ -24,7 +25,8 @@ public class GuestAccountMenu
             Console.Write("Unos:");
             switch (Console.ReadLine())
             {
-                case "1": break;
+                case "1": services.PrintMyReservations(guest); break;
+
                 case "2": break;
                 case "3": break;
                 case "4": break;
