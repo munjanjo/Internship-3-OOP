@@ -162,6 +162,53 @@ public class GuestServices
 
         Console.ReadKey();
     }
+    public void CancelReservation(Guest guest)
+    {
+        var reservations = HotelData.Reservations.Where(r => r.Guest == guest).ToList();
+        if (reservations.Count == 0)
+        {
+            System.Console.WriteLine("Nema postojecih rezervacija!");
+            Console.ReadKey();
+            return;
+        }
+
+        for (int i = 0; i < reservations.Count; i++)
+        {
+            var r = reservations[i];
+            Console.WriteLine($"{i + 1}. [{r.Id}] Soba {r.Room.Number} ({r.Room.Category}) | {r.CheckIn:yyyy-MM-dd} -> {r.CheckOut:yyyy-MM-dd} | {r.Nights} noći | {r.TotalPrice:0.00} € | {r.Status}");
+        }
+        int choice;
+        System.Console.WriteLine("Odaberi rezervaciju za otkazivanje (Moguce je samo takazati 48h unaprijed. Redni broj):");
+        while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > reservations.Count)
+            System.Console.WriteLine("Neispravan odabir!");
+
+        Reservation selected = reservations[choice - 1];
+
+        if (selected.Status != ReservationStatus.Potvrdena)
+        {
+            System.Console.WriteLine("Moguce je otkazati samo potvrdenu rezervaciju!");
+            Console.ReadKey();
+            return;
+        }
+        if (selected.CheckIn - DateTime.Now <= TimeSpan.FromHours(48))
+        {
+            System.Console.WriteLine("Rezervaciju je moguce otkazati samo ako je dolazak za vise od 48h!");
+            Console.ReadKey();
+            return;
+        }
+
+        System.Console.WriteLine($"Jeste li sigurni da zelite otkazati rezervaciju? (y/n)\n [{selected.Id}] Soba {selected.Room.Number} ({selected.Room.Category}) | {selected.CheckIn:yyyy-MM-dd} -> {selected.CheckOut:yyyy-MM-dd} | {selected.Nights} noći | {selected.TotalPrice:0.00} €");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Otkazivanje prekinuto.");
+            Console.ReadKey();
+            return;
+        }
+
+        selected.Cancel();
+        System.Console.WriteLine("Rezervacija uspjesno otkazana.");
+        Console.ReadKey();
+    }
 
 
 

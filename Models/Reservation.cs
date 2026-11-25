@@ -26,4 +26,10 @@ public class Reservation
         this.CreatedAt = DateTime.Now;
         this.LastUpdated = DateTime.Now;
     }
+    public void Cancel()
+    {
+        this.Status = ReservationStatus.Otkazana;
+        this.LastUpdated = DateTime.Now;
+    }
 }
+

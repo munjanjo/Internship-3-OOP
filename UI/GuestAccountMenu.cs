@@ -29,7 +29,7 @@ public class GuestAccountMenu
 
                 case "2": services.AddNewReservation(guest); break;
                 case "3": new RoomSearchMenu().Show(); break;
-                case "4": break;
+                case "4": services.CancelReservation(guest); break;
                 case "5": return;
                 default:
                     Console.WriteLine("Neispravan unos.");
