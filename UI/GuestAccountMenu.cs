@@ -27,7 +27,7 @@ public class GuestAccountMenu
             {
                 case "1": services.PrintMyReservations(guest); break;
 
-                case "2": break;
+                case "2": services.AddNewReservation(guest); break;
                 case "3": break;
                 case "4": break;
                 case "5": return;

@@ -119,6 +119,81 @@ public class GuestServices
         }
 
     }
+    public void AddNewReservation(Guest guest)
+    {
+        DateTime checkIn;
+        while (true)
+        {
+            System.Console.WriteLine("Unesi datum dolaska (yyyy-MM-dd):");
+            if (!DateTime.TryParseExact(Console.ReadLine().Trim(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out checkIn))
+                System.Console.WriteLine("Neispravan format datuma!");
+            else if (checkIn < DateTime.Today)
+                System.Console.WriteLine("Datum dolaska ne moze biti u proslosti!");
+            else
+                break;
+        }
+
+        DateTime checkOut;
+        while (true)
+        {
+            System.Console.WriteLine("Unesi datum odlaska (yyyy-MM-dd):");
+            if (!DateTime.TryParseExact(Console.ReadLine().Trim(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out checkOut))
+                System.Console.WriteLine("Neispravan format datuma!");
+            else if (checkOut <= checkIn)
+                System.Console.WriteLine("Datum odlaska mora biti nakon datuma dolaska!");
+            else
+                break;
+        }
+        Room? selectedRoom = SelectFreeRoom(checkIn, checkOut);
+        if (selectedRoom == null)
+            return;
+        Reservation reservation = new Reservation(guest, selectedRoom, checkIn, checkOut);
+        System.Console.WriteLine($"Jeste li sigurni da zelite napraviti rezervaciju?\n[{reservation.Id}] Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € \n (y/n)");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Rezervacija prekinuta.");
+            Console.ReadKey();
+            return;
+        }
+        Console.Clear();
+        HotelData.Reservations.Add(reservation);
+        System.Console.WriteLine($"Uspjesno rezervirano! [{reservation.Id}] Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € | {reservation.Status}");
+
+
+        Console.ReadKey();
+    }
+    public Room? SelectFreeRoom(DateTime checkIn, DateTime checkOut)
+    {
+        var freeRooms = HotelData.Rooms
+            .Where(room => !HotelData.Reservations.Any(r =>
+                r.Room == room &&
+                r.Status != ReservationStatus.Otkazana &&
+                checkIn < r.CheckOut &&
+                checkOut > r.CheckIn))
+            .ToList();
+
+        if (freeRooms.Count == 0)
+        {
+            Console.WriteLine("Nema slobodnih soba u tom razdoblju!");
+            Console.ReadKey();
+            return null;
+        }
+
+        for (int i = 0; i < freeRooms.Count; i++)
+        {
+            var room = freeRooms[i];
+            int reservationCount = HotelData.Reservations.Count(r => r.Room == room);
+            Console.WriteLine($"{i + 1}. [{room.Id}] Soba {room.Number} | {room.Floor}. kat | {room.Category} | {room.Capacity} osobe | {room.PricePerNight:0.00} €/noć | broj rezervacija: {reservationCount}");
+        }
+
+        int choice;
+        Console.WriteLine("Odaberi sobu (redni broj sobe):");
+        while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > freeRooms.Count)
+            Console.WriteLine("Neispravan odabir!");
+
+        return freeRooms[choice - 1];
+    }
+
 
 
 }
