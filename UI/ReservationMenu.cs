@@ -21,8 +21,8 @@ public class ReservationMenu
             {
                 case "1": reservationServices.PrintAllReservations(); break;
                 case "2": reservationServices.AddNewReservation(); break;
-                case "3": break;
-                case "4": break;
+                case "3": new ReservationSearchMenu().Show(); break;
+                case "4": reservationServices.EditReservation(); break;
                 case "5": break;
                 case "6": return;
                 default:

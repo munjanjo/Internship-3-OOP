@@ -31,5 +31,13 @@ public class Reservation
         this.Status = ReservationStatus.Otkazana;
         this.LastUpdated = DateTime.Now;
     }
+    public void ChangeDates(DateTime checkIn, DateTime checkOut)
+    {
+        this.CheckIn = checkIn;
+        this.CheckOut = checkOut;
+        this.Nights = (checkOut.Date - checkIn.Date).Days;
+        this.TotalPrice = this.Nights * this.Room.PricePerNight;
+        this.LastUpdated = DateTime.Now;
+    }
 }
 
