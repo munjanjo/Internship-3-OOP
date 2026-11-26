@@ -177,4 +177,40 @@ public class ReservationServices
         System.Console.WriteLine($"[{r.Id}] {r.Guest.FullName} | Soba {r.Room.Number} ({r.Room.Category}) | {r.CheckIn:yyyy-MM-dd} -> {r.CheckOut:yyyy-MM-dd} | {r.Nights} noći | {r.TotalPrice:0.00} € | {r.Status}");
         System.Console.WriteLine($"  Kreirano: {r.CreatedAt:yyyy-MM-dd HH:mm} | Zadnja promjena: {r.LastUpdated:yyyy-MM-dd HH:mm}");
     }
+    public void DeleteReservation()
+    {
+        Reservation? reservation = FindById();
+        if (reservation == null)
+        {
+            Console.ReadKey();
+            return;
+        }
+
+        PrintReservationDetails(reservation);
+
+        if (reservation.Status == ReservationStatus.Zavrsena)
+        {
+            System.Console.WriteLine("Zavrsena rezervacija se ne moze obrisati!");
+            Console.ReadKey();
+            return;
+        }
+        if (reservation.CheckIn - DateTime.Now <= TimeSpan.FromHours(48))
+        {
+            System.Console.WriteLine("Rezervaciju je moguce obrisati samo ako je dolazak za vise od 48h!");
+            Console.ReadKey();
+            return;
+        }
+
+        System.Console.WriteLine("Jeste li sigurni da zelite obrisati rezervaciju? (y/n)");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Brisanje prekinuto.");
+            Console.ReadKey();
+            return;
+        }
+
+        HotelData.Reservations.Remove(reservation);
+        System.Console.WriteLine("Rezervacija uspjesno obrisana.");
+        Console.ReadKey();
+    }
 }

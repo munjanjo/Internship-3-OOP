@@ -23,7 +23,7 @@ public class ReservationMenu
                 case "2": reservationServices.AddNewReservation(); break;
                 case "3": new ReservationSearchMenu().Show(); break;
                 case "4": reservationServices.EditReservation(); break;
-                case "5": break;
+                case "5": reservationServices.DeleteReservation(); break;
                 case "6": return;
                 default:
                     Console.WriteLine("Neispravan unos.");
