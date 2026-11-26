@@ -13,11 +13,12 @@ public class RoomServices
 
         var result = HotelData.Rooms.Where(r => r.Number == number).ToList();
         if (result.Count == 0)
+        {
             System.Console.WriteLine("Soba s tim brojem ne postoji!");
+            Console.ReadKey();
+        }
         else
             PrintRooms(result);
-
-        Console.ReadKey();
     }
 
     public void SearchByCategory()
@@ -33,20 +34,30 @@ public class RoomServices
         RoomCategory selectedCategory = (RoomCategory)(category - 1);
         var result = HotelData.Rooms.Where(r => r.Category == selectedCategory).ToList();
         if (result.Count == 0)
+        {
             System.Console.WriteLine("Nema soba te kategorije!");
+            Console.ReadKey();
+        }
         else
             PrintRooms(result);
-
-        Console.ReadKey();
     }
 
     public void PrintRooms(List<Room> rooms)
     {
+        if (rooms.Count == 0)
+        {
+            System.Console.WriteLine("Nema niti jedna soba.");
+            Console.ReadKey();
+            return;
+        }
         foreach (var room in rooms)
         {
             int reservationCount = HotelData.Reservations.Count(r => r.Room == room);
             Console.WriteLine($"[{room.Id}] Soba {room.Number} | {room.Floor}. kat | {room.Category} | {room.Capacity} osobe | {room.PricePerNight:0.00} €/noć | broj rezervacija: {reservationCount}");
+
         }
+        Console.ReadKey();
+        return;
     }
     public Room? SelectFreeRoom(DateTime checkIn, DateTime checkOut)
     {
@@ -79,4 +90,5 @@ public class RoomServices
 
         return freeRooms[choice - 1];
     }
+
 }
