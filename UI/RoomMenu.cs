@@ -19,9 +19,9 @@ public class RoomMenu
             switch (Console.ReadLine())
             {
                 case "1": services.PrintRooms(HotelData.Rooms); break;
-                case "2": break;
+                case "2": services.CreateNewRoom(); break;
                 case "3": new RoomSearchMenu().Show(); break;
-                case "4": break;
+                case "4": new RoomDeleteMenu().Show(); break;
                 case "5": return;
                 default:
                     Console.WriteLine("Neispravan unos.");

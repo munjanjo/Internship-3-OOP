@@ -90,5 +90,121 @@ public class RoomServices
 
         return freeRooms[choice - 1];
     }
+    public void CreateNewRoom()
+    {
 
+        int roomNumber;
+        while (true)
+        {
+            System.Console.WriteLine("Unesi broj sobe(jedinstven): ");
+            if (int.TryParse(Console.ReadLine(), out roomNumber) && roomNumber > 0)
+            {
+                var exists = HotelData.Rooms.Any(r => r.Number == roomNumber);
+                if (exists)
+                {
+                    System.Console.WriteLine("Postoji soba s tim brojem!");
+                }
+                else
+                    break;
+            }
+            else
+            {
+                System.Console.WriteLine("Moras unijeti pozitivan broj!");
+            }
+        }
+
+        System.Console.WriteLine("Unesi kat: ");
+        int floor;
+        while (!int.TryParse(Console.ReadLine(), out floor) || floor < 0)
+            System.Console.WriteLine("Moras unijeti broj (0 ili vise)!");
+
+        System.Console.WriteLine("1 - Standard");
+        System.Console.WriteLine("2 - Deluxe");
+        System.Console.WriteLine("3 - Suite");
+        System.Console.WriteLine("Odaberi kategoriju (redni broj):");
+        int category;
+        while (!int.TryParse(Console.ReadLine(), out category) || category < 1 || category > 3)
+            System.Console.WriteLine("Neispravan odabir!");
+        RoomCategory selectedCategory = (RoomCategory)(category - 1);
+
+        System.Console.WriteLine("Unesi kapacitet (broj osoba): ");
+        int capacity;
+        while (!int.TryParse(Console.ReadLine(), out capacity) || capacity <= 0)
+            System.Console.WriteLine("Moras unijeti pozitivan broj!");
+
+        System.Console.WriteLine("Unesi cijenu nocenja (npr. 120.50): ");
+        decimal price;
+        while (!decimal.TryParse(Console.ReadLine(), System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out price) || price <= 0)
+            System.Console.WriteLine("Moras unijeti cijenu vecu od 0 (s tockom, npr. 120.50)!");
+
+        System.Console.WriteLine($"Soba {roomNumber} | {floor}. kat | {selectedCategory} | {capacity} osobe | {price:0.00} €/noć");
+        System.Console.WriteLine("Jeste li sigurni da zelite dodati sobu? (y/n)");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Dodavanje sobe prekinuto.");
+            Console.ReadKey();
+            return;
+        }
+
+        Room room = new Room(roomNumber, floor, selectedCategory, capacity, price);
+        HotelData.Rooms.Add(room);
+        System.Console.WriteLine($"Soba {room.Number} uspjesno dodana.");
+        Console.ReadKey();
+    }
+
+    public void DeleteRoomById()
+    {
+        System.Console.WriteLine("Unesi id sobe:");
+        if (!Guid.TryParse(Console.ReadLine().Trim(), out Guid id))
+        {
+            System.Console.WriteLine("Neispravan format id-a!");
+            Console.ReadKey();
+            return;
+        }
+
+        Room? room = HotelData.Rooms.FirstOrDefault(r => r.Id == id);
+        DeleteRoom(room);
+    }
+
+    public void DeleteRoomByNumber()
+    {
+        System.Console.WriteLine("Unesi broj sobe:");
+        int number;
+        while (!int.TryParse(Console.ReadLine(), out number))
+            System.Console.WriteLine("Unesi broj!");
+
+        Room? room = HotelData.Rooms.FirstOrDefault(r => r.Number == number);
+        DeleteRoom(room);
+    }
+
+    private void DeleteRoom(Room? room)
+    {
+        if (room == null)
+        {
+            System.Console.WriteLine("Soba ne postoji!");
+            Console.ReadKey();
+            return;
+        }
+
+        bool hasActiveReservation = HotelData.Reservations.Any(r => r.Room == room && r.Status == ReservationStatus.Potvrdena);
+        if (hasActiveReservation)
+        {
+            System.Console.WriteLine("Soba ima aktivnu (potvrdenu) rezervaciju i ne moze se obrisati!");
+            Console.ReadKey();
+            return;
+        }
+
+        System.Console.WriteLine($"Soba {room.Number} | {room.Floor}. kat | {room.Category} | {room.Capacity} osobe | {room.PricePerNight:0.00} €/noć");
+        System.Console.WriteLine("Jeste li sigurni da zelite obrisati sobu? (y/n)");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Brisanje sobe prekinuto.");
+            Console.ReadKey();
+            return;
+        }
+
+        HotelData.Rooms.Remove(room);
+        System.Console.WriteLine($"Soba {room.Number} uspjesno obrisana.");
+        Console.ReadKey();
+    }
 }
