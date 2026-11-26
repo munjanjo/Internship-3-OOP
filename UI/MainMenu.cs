@@ -18,7 +18,7 @@ public class MainMenu
             switch (Console.ReadLine())
             {
                 case "1": new GuestMenu().Show(); break;
-                case "2": break;
+                case "2": new ReservationMenu().Show(); break;
                 case "3": break;
                 case "4": break;
                 case "5": return;

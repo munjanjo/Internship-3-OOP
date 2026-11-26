@@ -148,7 +148,7 @@ public class GuestServices
         if (selectedRoom == null)
             return;
         Reservation reservation = new Reservation(guest, selectedRoom, checkIn, checkOut);
-        System.Console.WriteLine($"Jeste li sigurni da zelite napraviti rezervaciju?\n[{reservation.Id}] Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € \n (y/n)");
+        System.Console.WriteLine($"Jeste li sigurni da zelite napraviti rezervaciju?\n{reservation.Guest.FullName} | Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € \n (y/n)");
         if (Console.ReadLine().Trim().ToLower() != "y")
         {
             System.Console.WriteLine("Rezervacija prekinuta.");
@@ -157,8 +157,7 @@ public class GuestServices
         }
         Console.Clear();
         HotelData.Reservations.Add(reservation);
-        System.Console.WriteLine($"Uspjesno rezervirano! [{reservation.Id}] Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € | {reservation.Status}");
-
+        System.Console.WriteLine($"Uspjesno rezervirano! [{reservation.Id}] {reservation.Guest.FullName} | Soba {reservation.Room.Number} ({reservation.Room.Category}) | {reservation.CheckIn:yyyy-MM-dd} -> {reservation.CheckOut:yyyy-MM-dd} | {reservation.Nights} noći | {reservation.TotalPrice:0.00} € | {reservation.Status}");
 
         Console.ReadKey();
     }
