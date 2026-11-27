@@ -106,4 +106,62 @@ public class StaffServices()
 
         return employees[choice - 1];
     }
+    public void AddEmployee()
+    {
+        string firstName;
+        while (true)
+        {
+            System.Console.WriteLine("Unesi ime:");
+            firstName = Console.ReadLine().Trim();
+            if (!string.IsNullOrWhiteSpace(firstName))
+                break;
+            System.Console.WriteLine("Moras unijeti ime!");
+        }
+
+        string lastName;
+        while (true)
+        {
+            System.Console.WriteLine("Unesi prezime:");
+            lastName = Console.ReadLine().Trim();
+            if (!string.IsNullOrWhiteSpace(lastName))
+                break;
+            System.Console.WriteLine("Moras unijeti prezime!");
+        }
+
+        int birthYear;
+        System.Console.WriteLine("Unesi godinu rodenja:");
+        while (!int.TryParse(Console.ReadLine(), out birthYear) || birthYear < 1900 || birthYear > DateTime.Now.Year)
+            System.Console.WriteLine($"Unesi ispravnu godinu (1900 - {DateTime.Now.Year})!");
+
+        System.Console.WriteLine("1 - Musko");
+        System.Console.WriteLine("2 - Zensko");
+        System.Console.Write("Odaberi spol (unesi redni broj): ");
+        int genderChoice;
+        while (!int.TryParse(Console.ReadLine(), out genderChoice) || genderChoice < 1 || genderChoice > 2)
+            System.Console.Write("Neispravan odabir! Unesi redni broj: ");
+        Gender gender = (Gender)(genderChoice - 1);
+
+        System.Console.WriteLine("1 - Recepcionar");
+        System.Console.WriteLine("2 - Sobarica/Sobar");
+        System.Console.WriteLine("3 - Kuhar");
+        System.Console.Write("Odaberi poziciju (unesi redni broj): ");
+        int positionChoice;
+        while (!int.TryParse(Console.ReadLine(), out positionChoice) || positionChoice < 1 || positionChoice > 3)
+            System.Console.Write("Neispravan odabir! Unesi redni broj: ");
+        Position position = (Position)(positionChoice - 1);
+
+        System.Console.WriteLine($"{firstName} {lastName} ({birthYear}) | {gender} | {position}");
+        System.Console.WriteLine("Jeste li sigurni da zelite dodati zaposlenika? (y/n)");
+        if (Console.ReadLine().Trim().ToLower() != "y")
+        {
+            System.Console.WriteLine("Dodavanje zaposlenika prekinuto.");
+            Console.ReadKey();
+            return;
+        }
+
+        Employee employee = new Employee(firstName, lastName, birthYear, gender, position);
+        HotelData.Employees.Add(employee);
+        System.Console.WriteLine($"Zaposlenik {employee.FirstName} {employee.LastName} uspjesno dodan.");
+        Console.ReadKey();
+    }
 }

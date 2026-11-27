@@ -19,7 +19,7 @@ public class StaffMenu
             {
                 case "1": services.PrintAllShifts(); break;
                 case "2": services.CreateNewShift(); break;
-                case "3": break;
+                case "3": services.AddEmployee(); break;
                 case "4": return;
                 default:
                     Console.WriteLine("Neispravan unos.");
