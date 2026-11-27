@@ -213,4 +213,12 @@ public class ReservationServices
         System.Console.WriteLine("Rezervacija uspjesno obrisana.");
         Console.ReadKey();
     }
+    public void CompletePastReservations()
+    {
+        foreach (var r in HotelData.Reservations)
+        {
+            if (r.Status == ReservationStatus.Potvrdena && r.CheckOut < DateTime.Today)
+                r.Complete();
+        }
+    }
 }

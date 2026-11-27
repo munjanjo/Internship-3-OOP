@@ -18,7 +18,7 @@ public class RoomMenu
             Console.Write("Unos:");
             switch (Console.ReadLine())
             {
-                case "1": services.PrintRooms(HotelData.Rooms); break;
+                case "1": new RoomSortMenu().Show(); break;
                 case "2": services.CreateNewRoom(); break;
                 case "3": new RoomSearchMenu().Show(); break;
                 case "4": new RoomDeleteMenu().Show(); break;

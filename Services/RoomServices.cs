@@ -207,4 +207,25 @@ public class RoomServices
         System.Console.WriteLine($"Soba {room.Number} uspjesno obrisana.");
         Console.ReadKey();
     }
+    public void PrintRoomsByCreated()
+    {
+        var rooms = HotelData.Rooms.OrderBy(r => r.CreatedAt).ToList();
+        PrintRooms(rooms);
+    }
+
+    public void PrintRoomsByPrice(bool descending)
+    {
+        var rooms = descending
+            ? HotelData.Rooms.OrderByDescending(r => r.PricePerNight).ToList()
+            : HotelData.Rooms.OrderBy(r => r.PricePerNight).ToList();
+        PrintRooms(rooms);
+    }
+
+    public void PrintRoomsByReservationCount(bool descending)
+    {
+        var rooms = descending
+            ? HotelData.Rooms.OrderByDescending(room => HotelData.Reservations.Count(r => r.Room == room)).ToList()
+            : HotelData.Rooms.OrderBy(room => HotelData.Reservations.Count(r => r.Room == room)).ToList();
+        PrintRooms(rooms);
+    }
 }

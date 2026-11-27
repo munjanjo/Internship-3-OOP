@@ -39,5 +39,10 @@ public class Reservation
         this.TotalPrice = this.Nights * this.Room.PricePerNight;
         this.LastUpdated = DateTime.Now;
     }
+    public void Complete()
+    {
+        this.Status = ReservationStatus.Zavrsena;
+        this.LastUpdated = DateTime.Now;
+    }
 }
 
