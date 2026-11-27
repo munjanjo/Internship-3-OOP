@@ -20,7 +20,7 @@ public class MainMenu
                 case "1": new GuestMenu().Show(); break;
                 case "2": new ReservationMenu().Show(); break;
                 case "3": new RoomMenu().Show(); break;
-                case "4": break;
+                case "4": new StaffMenu().Show(); break;
                 case "5": return;
                 default:
                     Console.WriteLine("Neispravan unos.");
